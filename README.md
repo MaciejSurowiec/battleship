@@ -21,7 +21,15 @@ Simple web app to play battleships with other players.
 
 ## Usage 
 
-'./manage.py runserver' starts application which can be accessed on 'localhost:8000/battleships'
+first install all requirements using:
+```console
+pip install -r requirements.txt
+```
+then run 
+```console
+./manage.py runserver
+```
+which starts application that can be accessed on 'localhost:8000/battleships'
 
 Screens from web app:
 
