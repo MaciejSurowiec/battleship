@@ -23,7 +23,7 @@ Simple web app to play battleships with other players.
 
 './manage.py runserver' starts application which can be accessed on 'localhost:8000/battleships'
 
-Screens for web app:
+Screens from web app:
 
 <img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/main.png" width=620 height=315>
 
