@@ -27,7 +27,9 @@ Screens for web app:
 
 <img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/main.png" width=620 height=315>
 
-<img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/preparation.png" width=620 height=315>
+<img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/preparation1.png" width=620 height=315>
+
+<img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/preparation2.png" width=620 height=315>
 
 <img src="https://raw.github.com/MaciejSurowiec/battleship/master/examples/game.png" width=620 height=315>
 
