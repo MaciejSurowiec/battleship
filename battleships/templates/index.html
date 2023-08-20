@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% load static %}
+<h1> Welcome in battleship game</h1>
+{% if user.is_authenticated %}
+    <div class="container">
+    <div class="next_container" ><table class="list">
+    <tr><td><div class="input-container"><input id="user-input" class="input" type="text" placeholder="search users"></div></td></tr>
+    <tr><td><div id="replaceable-content">
+            {% include 'search_users.html' %}
+        </div></td></tr>
+    </table></div>
+
+    <div class="next_container"><table class="list invites">
+        <tr><td colspan="3"><h2>Invites</h2></td></tr>
+        {% if received_invites %}
+            {% for invite in received_invites %}
+                <tr>
+                    <td>{{ invite.sender.username }}</td>
+                    <td><button class="button accept" onclick="accept('{{invite.id}}','{{ csrf_token }}')">Accept</button></td>
+                    <td><button class="button decline" onclick="decline('{{invite.id}}','{{ csrf_token }}')">Decline</button></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td>no invites</td></tr>
+        {% endif %}
+    </table></div>
+
+    <div class="next_container"><table class="list games">
+        <tr><td colspan="3"><h2>Games</h2></td></tr>
+        {% if games %}
+            {% for game in games %}
+                <tr>
+                    {% if game.first_player_board.preparation_phase or game.second_player_board.preparation_phase %}
+                         {% if game.first_player_board.player.id == user.id %}
+                            <td>{{ game.second_player_board.player.username }}</td>
+                            {% if game.first_player_board.preparation_phase %}
+                                <td>prepare your board</td>
+                            {% else %}
+                                <td>waiting for {{ game.second_player_board.player.username }}</td>
+                            {% endif %}
+                        {% else %}
+                            <td>{{ game.first_player_board.player.username }}</td>
+                            {% if game.second_player_board.preparation_phase %}
+                                <td>prepare your board</td>
+                            {% else %}
+                                <td>waiting for {{ game.first_player_board.player.username }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if game.first_player_board.player.id == user.id %}
+                            <td>{{ game.second_player_board.player.username }}</td>
+                            {% if game.current_player == 0 %}
+                                <td>your turn</td>
+                            {% else %}
+                                <td>{{ game.second_player_board.player.username }} turn</td>
+                            {% endif %}
+                        {% else %}
+                            <td>{{ game.first_player_board.player.username }}</td>
+                            {% if game.current_player == 1 %}
+                                <td>your turn</td>
+                            {% else %}
+                                <td>{{ game.first_player_board.player.username }} turn</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if game.result == 0 %}
+                        <td><a href="/battleships/game/{{game.id}}" class="link">Continue</a></td>
+                    {% else %}
+                        {% if game.first_player_board.player.id == user.id %}
+                            {% if game.result == 1 %}
+                                <td> you won!</td>
+                            {% else %}
+                                <td> you lost</td>
+                            {% endif %}
+                        {% else %}
+                            {% if game.result == -1 %}
+                                <td> you won!</td>
+                            {% else %}
+                                <td> you lost</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td>no games</td></tr>
+        {% endif %}
+    </table></div>
+    </div>
+{% endif %}
+<script src="{% static 'user_search.js' %}" ></script>
+<script src="{% static 'invites.js' %}" ></script>
+{% endblock content%}
+

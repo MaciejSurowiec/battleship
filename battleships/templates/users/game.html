@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% if board.preparation_phase %}
+<div class="container">
+    <div class="board_form">
+        <form>
+            <table class="board">
+                <tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+                    {% for row in board.array %}
+                        <tr class="board_element">
+                            {% for element in row %}
+                                {% if forloop.counter == 1 %}
+                                    <td>{{ forloop.parentloop.counter }}</td>
+                                {% endif %}
+                                <td class="board_element"><div id="{{ forloop.counter }}x{{ forloop.parentloop.counter }}" class="block water" ondrop="drop(event)" ondragover="allowDrop(event)"></div></td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+            </table>
+        </form>
+        <button onclick="checkAndSend('{{ csrf_token }}')" class="submit game_button">Submit</button>
+    </div>
+    <div class="helptext">
+        <h1>Setup</h1>
+        <p>Drag and drop ships to set them up in place</p>
+        <p>Double click on ship to rotate it</p>
+        <p>When you move all ships on board click on submit button</p>
+        <p>Enjoy!</p>
+
+    </div>
+</div>
+<table class="boats_container"><tr>
+    <td id="boats5" class="boat_container">
+        <div id="drag1" ondblclick="rotate('drag1')" draggable="true" class="block boat5 color5" ondragstart="drag(event)"></div>
+    </td>
+    <td id="boats4"  class="boat_container">
+        <div id="drag2" ondblclick="rotate('drag2')" draggable="true" class="block boat4 color4" ondragstart="drag(event)"></div>
+        <div id="drag3" ondblclick="rotate('drag3')" draggable="true" class="block boat4 color4" ondragstart="drag(event)"></div>
+    </td>
+    <td id="boats3"  class="boat_container">
+        <div id="drag4" ondblclick="rotate('drag4')" draggable="true" class="block boat3 color3" ondragstart="drag(event)"></div>
+        <div id="drag5" ondblclick="rotate('drag5')" draggable="true" class="block boat3 color3" ondragstart="drag(event)"></div>
+        <div id="drag6" ondblclick="rotate('drag6')" draggable="true" class="block boat3 color3" ondragstart="drag(event)"></div>
+    </td>
+    <td id="boats2" class="boat_container">
+        <div id="drag7" ondblclick="rotate('drag7')" draggable="true" class="block boat2 color2" ondragstart="drag(event)"></div>
+        <div id="drag8" ondblclick="rotate('drag8')" draggable="true" class="block boat2 color2" ondragstart="drag(event)"></div>
+        <div id="drag9" ondblclick="rotate('drag9')" draggable="true" class="block boat2 color2" ondragstart="drag(event)"></div>
+        <div id="drag10" ondblclick="rotate('drag10')" draggable="true" class="block boat2 color2" ondragstart="drag(event)"></div>
+    </td>
+</tr></table>
+    {% else %}
+    <div class="container">
+        <div class="board center">
+            <h2>Your board</h2>
+        <table>
+                <tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+                {% for row in board.array %}
+                    <tr class="board_element">
+                        {% for element in row %}
+                            {% if forloop.counter == 1 %}
+                                <td>{{ forloop.parentloop.counter }}</td>
+                            {% endif %}
+                            {% if element == 0 %}
+                                <td class="board_element"><div class="block water"></div></td>
+                            {% elif element == 2 %}
+                                <td class="board_element"><div class="block color2"></div></td>
+                            {% elif element == 3 %}
+                                <td class="board_element"><div class="block color3"></div></td>
+                            {% elif element == 4 %}
+                                <td class="board_element"><div class="block color4"></div></td>
+                            {% elif element == 5 %}
+                                <td class="board_element"><div class="block color5"></div></td>
+                            {% elif element == -1 %}
+                                <td class="board_element"><div class="block missed"></div></td>
+                            {% elif element == -2 %}
+                                <td class="board_element"><div class="block destroyed"></div></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+        </table>
+            </div>
+        <div class="board center">
+            <h2>Enemy board</h2>
+            <form>
+                <table >
+                    <tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+                        {% for row in enemy_board.array %}
+                            <tr class="board_element">
+                                {% for element in row %}
+                                    {% if forloop.counter == 1 %}
+                                        <td>{{ forloop.parentloop.counter }}</td>
+                                    {% endif %}
+                                    {% if element == 0 %}
+                                        <td class="board_element"><input type="radio" value="{{ forloop.counter }}x{{ forloop.parentloop.counter }}" name="attack" class="block water"/></td>
+                                    {% elif element == -1 %}
+                                        <td class="board_element"><div class="block missed" disabled></div></td>
+                                    {% elif element == -2 %}
+                                        <td class="board_element"><div class="block destroyed" disabled></div></td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                </table>
+            </form>
+        </div>
+    </div>
+    <div  class="center">
+        {% if turn == 1 and enemy_board.preparation_phase is False %}
+            <button onclick="attack('{{ csrf_token }}')" class="submit game_button">Attack</button>
+        {% else %}
+            <p> Waiting for other player</p>
+        {% endif %}
+    </div>
+    {% endif %}
+{% load static %}
+<script src="{% static 'setup.js' %}" ></script>
+<script src="{% static 'gameplay.js' %}" ></script>
+
+{% endblock content%}

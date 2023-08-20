@@ -1,0 +1,28 @@
+
+
+{% if users_list %}
+    <table class="list">
+        {% for u in users_list %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td><button class="listbutton button" onclick="invite('{{u.id}}', this)" {% if u.id in invites %} disabled {% endif %}>invite</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script type="text/javascript">
+    var invite = function(value, object) {
+        object.disabled = true;
+        $.ajax({
+            type: 'POST',
+            url: '/battleships/invite/',
+            headers: {'X-CSRFToken': "{{ csrf_token }}"},
+            data: value,
+            contentType: "application/json",
+            dataType: 'json'
+        });
+    }
+    </script>
+{% else %}
+    <p> No users found</p>
+{% endif %}

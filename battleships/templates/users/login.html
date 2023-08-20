@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="login_form" method="POST" novalidate>
+	{% csrf_token %}
+	<h2 class="title">Login</h2>
+	{% for field in form %}
+		<div class="input-container ic1">
+			{% if field.html_name == "username" %}
+				<input id="{{ field.id_for_label }}" class="input" name="{{ field.html_name }}" value='{{ field.value|default_if_none:"" }}' type="text" placeholder=" " />
+			{% else %}
+				<input id="{{ field.id_for_label }}" class="input" name="{{ field.html_name }}" value='{{ field.value|default_if_none:"" }}' type="password" placeholder=" " />
+			{% endif %}
+			<div class="cut"></div>
+			<label for="{{ field.id_for_label }}" class="placeholder">{{ field.html_name }}</label>
+		</div>
+		{{ field.errors }}
+	{% endfor %}
+	<input type="submit" class="submit" value="Login" />
+</form>
+
+{% endblock content%}
