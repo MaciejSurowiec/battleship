@@ -17,7 +17,7 @@ Simple web app to play battleships with other players.
 * Python
 * Django
 * JavaScript
-T
+  
 
 ## Usage 
 
