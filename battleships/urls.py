@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('game/<int:id>', views.game_view, name='game'),
     path('game/<int:id>/setup/', views.game_setup, name='game_setup'),
     path('game/<int:id>/move/', views.game_move, name='game_move'),
+    path('api/', include('battleships.api.urls'))
 ]

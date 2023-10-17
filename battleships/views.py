@@ -114,7 +114,7 @@ def process_invite(request, id):
         board = Board.objects.create(player_id=request.user.id, array=[[0]*10]*10)
         enemy_board = Board.objects.create(player_id=second_user.id, array=[[0]*10]*10)
         #for now sender is always first player but this can be randomized
-        game = Game.objects.create(first_player_board_id=enemy_board.id, second_player_board_id=board.id)
+        Game.objects.create(first_player_board_id=enemy_board.id, second_player_board_id=board.id)
         Invite.objects.filter(id=id).delete()
 
         # redirect to game view?
@@ -135,7 +135,7 @@ def game_view(request, id):
         board = game.first_player_board
         enemy_board = game.second_player_board
 
-    if game.current_player == 0:
+    if game.current_player == 1:
         if game.first_player_board.player.id == request.user.id:
             turn = 1
         else:
@@ -186,21 +186,20 @@ def game_move(request, id):
 
         if enemy_board.array[y][x] == 0:
             enemy_board.array[y][x] = -1
-        else:
-            if enemy_board.array[y][x] > 0:
-                enemy_board.array[y][x] = -2
-                enemy_board.ships_element_left -= 1
+        elif enemy_board.array[y][x] > 0:
+            enemy_board.array[y][x] = -2
+            enemy_board.ships_element_left -= 1
 
             if enemy_board.ships_element_left == 0:
                 if game.first_player_board.player.id == request.user.id:
                     game.result = 1
                 else:
-                    game.result = -1
+                    game.result = 2
 
-        if game.current_player == 0:
-            game.current_player = 1
+        if game.current_player == 1:
+            game.current_player = 2
         else:
-            game.current_player = 0
+            game.current_player = 1
 
         game.save()
         enemy_board.save()

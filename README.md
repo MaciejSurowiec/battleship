@@ -5,7 +5,7 @@
 * [Technologies](#technologies)
 * [Usage](#Usage)
 * [To do](#todo)
-* [Liscense](#License)
+* [License](#License)
 
 
 ## General info
@@ -16,18 +16,19 @@ Simple web app to play battleships with other players.
 
 * Python
 * Django
+* Django rest framework
+* Docker
 * JavaScript
-  
 
 ## Usage 
 
-first install all requirements using:
+first build Docker image:
 ```console
-pip install -r requirements.txt
+docker-compose build
 ```
-then run 
+then run docker container:
 ```console
-./manage.py runserver
+docker-compose up
 ```
 which starts application that can be accessed on 'localhost:8000/battleships'
 
@@ -44,7 +45,6 @@ Screens from web app:
 
 ## To do
 
-* Add Tests
 * Add Pygame app
 * Single player mode
 * Statistics

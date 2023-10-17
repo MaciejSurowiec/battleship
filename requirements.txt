@@ -1,4 +1,6 @@
-django
-psycopg2
-asgiref
-sqlparse
+django==4.2.3
+psycopg2==2.9.6
+psycopg==3.1.9
+asgiref==3.7.2
+djangorestframework==3.14.0
+sqlparse==0.4.4

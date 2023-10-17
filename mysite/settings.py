@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-%k$l!pt%oa0-hl#^$j((ud7x+!(q137q+%nza^yf!m!tfn2bhw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -71,8 +72,8 @@ DATABASES = {
         'NAME': 'battleships',
         'USER': 'admin',
         'PASSWORD': 'Admin123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
